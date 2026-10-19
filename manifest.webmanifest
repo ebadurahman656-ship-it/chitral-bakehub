@@ -1,0 +1,71 @@
+{
+  "name": "Chitral BakeHub",
+  "short_name": "BakeHub",
+  "description": "Freshly prepared. Locally delivered. Premium multi-bakery delivery marketplace for Chitral Valley.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFF8ED",
+  "theme_color": "#39251C",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": [
+    "food",
+    "shopping",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Fresh Bread & Loaves",
+      "short_name": "Fresh Bread",
+      "description": "Order stone-oven baked walnut loaves and Roghani naan",
+      "url": "./index.html?category=BREAD",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "My Bakery Orders",
+      "short_name": "Orders",
+      "description": "Track live oven preparation and rider delivery",
+      "url": "./index.html?view=orders",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}

@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Chitral BakeHub — Freshly prepared. Locally delivered.</title>
+  
+  <!-- PWA & Android Meta Tags -->
+  <meta name="theme-color" content="#39251C">
+  <meta name="description" content="Chitral BakeHub — Premium multi-bakery delivery marketplace for Chitral Valley. Freshly prepared, locally delivered.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BakeHub">
+  <meta name="application-name" content="Chitral BakeHub">
+  <meta name="msapplication-TileColor" content="#39251C">
+  
+  <!-- Manifest & Favicon -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+
+  <style>
+    /* DESIGN TOKENS */
+    :root {
+      --color-bg-primary: #FFF8ED;
+      --color-bg-secondary: #F3E6D5;
+      --color-brand-primary: #39251C;
+      --color-brand-secondary: #654333;
+      --color-action-primary: #D97732;
+      --color-accent: #F2C66D;
+      --color-card: #FFFFFF;
+      --color-text-primary: #30231D;
+      --color-text-secondary: #76665A;
+      --color-border: #E8DCCB;
+      --color-success: #1E5128;
+      --color-success-bg: #EAF4EC;
+      --color-warning: #8D5B00;
+      --color-warning-bg: #FEF6E7;
+      --color-error: #8B1E1E;
+      --color-error-bg: #FDECEC;
+      
+      --shadow-sm: 0 1px 3px rgba(57, 37, 28, 0.06);
+      --shadow-md: 0 4px 10px -2px rgba(57, 37, 28, 0.10);
+      --shadow-lg: 0 12px 24px -4px rgba(57, 37, 28, 0.16);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app-viewport {
+      width: 100%;
+      max-width: 480px;
+      background: var(--color-bg-primary);
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 96px;
+      border-left: 1px solid var(--color-border);
+      border-right: 1px solid var(--color-border);
+    }
+
+    /* PWA INSTALL BANNER */
+    .pwa-install-banner {
+      display: none;
+      background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-secondary) 100%);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--color-action-primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .pwa-install-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pwa-install-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: #FFFFFF;
+      padding: 2px;
+    }
+
+    .pwa-install-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    .pwa-install-desc {
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    .pwa-install-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-install {
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .btn-dismiss-install {
+      background: transparent;
+      border: none;
+      color: var(--color-accent);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* TOP HEADER */
+    header.main-header {
+      background: var(--color-card);
+      border-bottom: 1px solid var(--color-border);
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 80;
+    }
+
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .brand-logo-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--color-brand-primary);
+    }
+
+    .brand-logo-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--color-brand-primary);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      font-size: 10px;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .location-chip {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-brand-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .install-pill {
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* SEARCH BAR */
+    .search-container {
+      position: relative;
+      margin-top: 6px;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 46px;
+      background: var(--color-bg-primary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0 16px 0 40px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--color-action-primary);
+      background: #FFFFFF;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--color-text-secondary);
+    }
+
+    /* HERO PROMO BANNER */
+    .hero-banner {
+      margin: 16px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      background: var(--color-brand-primary);
+      color: #FFFFFF;
+      box-shadow: var(--shadow-md);
+      height: 148.dp;
+      min-height: 154px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-bg-img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: crop;
+      object-position: center;
+      opacity: 0.45;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 18px;
+      max-width: 75%;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-brand-primary);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .hero-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .hero-subtitle {
+      font-size: 12px;
+      color: var(--color-bg-secondary);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .hero-cta {
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* CATEGORIES RAIL */
+    .section-header {
+      padding: 16px 16px 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--color-brand-primary);
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      padding: 0 16px 8px 16px;
+    }
+
+    .category-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 4px 16px 10px 16px;
+      scrollbar-width: none;
+    }
+    .category-scroll::-webkit-scrollbar { display: none; }
+
+    .category-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 64px;
+      cursor: pointer;
+    }
+
+    .category-icon-box {
+      width: 56px;
+      height: 56px;
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .category-chip.active .category-icon-box {
+      background: var(--color-action-primary);
+      border-color: var(--color-action-primary);
+      transform: translateY(-2px);
+    }
+
+    .category-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .category-chip.active .category-label {
+      color: var(--color-action-primary);
+      font-weight: 700;
+    }
+
+    /* VERTICAL LAZY LIST: BAKERIES */
+    .bakery-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 4px 16px;
+    }
+
+    .bakery-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .bakery-card:active {
+      transform: scale(0.99);
+    }
+
+    .bakery-img-box {
+      height: 148px;
+      position: relative;
+      background: var(--color-bg-secondary);
+    }
+
+    .bakery-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bakery-oven-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .status-active {
+      background: var(--color-success-bg);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+    }
+
+    .status-busy {
+      background: var(--color-warning-bg);
+      color: var(--color-warning);
+      border: 1px solid var(--color-warning);
+    }
+
+    .bakery-rating-pill {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(57, 37, 28, 0.9);
+      color: #FFFFFF;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .bakery-location-pill {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: var(--color-bg-secondary);
+      color: var(--color-brand-primary);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .bakery-details {
+      padding: 14px;
+    }
+
+    .bakery-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--color-brand-primary);
+      margin-bottom: 6px;
+    }
+
+    .bakery-desc {
+      font-size: 13px;
+      color: var(--color-text-primary);
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    .bakery-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .bakery-actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .specialty-tags {
+      display: flex;
+      gap: 6px;
+    }
+
+    .specialty-tag {
+      background: var(--color-bg-secondary);
+      color: var(--color-brand-secondary);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .btn-view-bakes {
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* PRODUCT CARDS GRID */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 4px 16px;
+    }
+
+    .product-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .product-thumb-box {
+      height: 110px;
+      position: relative;
+      background: var(--color-bg-secondary);
+    }
+
+    .product-thumb-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-rapid-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .product-body {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .product-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .product-desc {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      margin-bottom: 8px;
+      flex: 1;
+      line-height: 1.35;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--color-brand-primary);
+    }
+
+    .btn-add {
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      background: var(--color-bg-secondary);
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+    }
+
+    .qty-btn {
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--color-brand-primary);
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .qty-val {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+
+    /* STICKY BOTTOM CART BAR */
+    .sticky-cart-bar {
+      display: none;
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 448px;
+      background: var(--color-brand-primary);
+      color: #FFFFFF;
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      box-shadow: var(--shadow-lg);
+      z-index: 90;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .cart-summary-text {
+      font-size: 12px;
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .cart-summary-price {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .btn-view-cart {
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* BOTTOM NAV BAR */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: 64px;
+      background: var(--color-card);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 95;
+    }
+
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      text-decoration: none;
+      color: var(--color-text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 25%;
+    }
+
+    .nav-btn.active {
+      color: var(--color-action-primary);
+      font-weight: 800;
+    }
+
+    .nav-icon {
+      font-size: 19px;
+    }
+
+    /* MODAL SHEETS */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(48, 35, 29, 0.6);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-sheet {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 20px 36px 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--color-brand-primary);
+    }
+
+    .btn-close-modal {
+      background: var(--color-bg-secondary);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* DUAL FULFILLMENT SELECTOR */
+    .fulfillment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .fulfillment-card {
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      cursor: pointer;
+      background: #FFFFFF;
+    }
+
+    .fulfillment-card.selected {
+      border-color: var(--color-action-primary);
+      background: var(--color-bg-secondary);
+    }
+
+    .fulfillment-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-brand-primary);
+      margin-bottom: 4px;
+    }
+
+    .fulfillment-desc {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      line-height: 1.35;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-brand-primary);
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 300;
+      display: none;
+      box-shadow: var(--shadow-md);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+
+    <!-- 1. ANDROID PWA INSTALL PROMPT BANNER -->
+    <div id="pwaInstallBanner" class="pwa-install-banner">
+      <div class="pwa-install-info">
+        <img src="./icons/icon-192.png" alt="Chitral BakeHub App" class="pwa-install-icon">
+        <div>
+          <div class="pwa-install-title">Install Chitral BakeHub</div>
+          <div class="pwa-install-desc">Fast stone oven ordering on Android</div>
+        </div>
+      </div>
+      <div class="pwa-install-actions">
+        <button id="btnTriggerInstall" class="btn-install" aria-label="Install App on Android">
+          <span>📲 Install</span>
+        </button>
+        <button id="btnDismissInstall" class="btn-dismiss-install" aria-label="Dismiss banner">✕</button>
+      </div>
+    </div>
+
+    <!-- 2. HEADER BAR -->
+    <header class="main-header">
+      <div class="brand-bar">
+        <a href="./index.html" class="brand-logo-title">
+          <img src="./icons/icon-192.png" alt="BakeHub Logo" class="brand-logo-img">
+          <div>
+            <div class="brand-title">Chitral BakeHub</div>
+            <div class="brand-tagline">Freshly prepared. Locally delivered.</div>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <div class="location-chip" id="locationSelectorBtn">
+            <span>📍</span>
+            <span id="activeLocationText">Shahi Bazar</span>
+            <span>▼</span>
+          </div>
+          <button id="headerInstallBtn" class="install-pill" title="Install Android App">
+            <span>📲 App</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search bakeries, walnut bread, cakes, pastries..." aria-label="Search baked goods">
+      </div>
+    </header>
+
+    <!-- 3. HERO PROMOTIONAL BANNER -->
+    <section class="hero-banner">
+      <img src="./images/img_hero_banner.jpg" alt="Chitral Bakery Hearth" class="hero-bg-img">
+      <div class="hero-content">
+        <span class="hero-badge">Shahi Bazar Fresh</span>
+        <h2 class="hero-title">Artisanal Walnut Breads & Honey Tarts</h2>
+        <p class="hero-subtitle">Wood-fired stone oven baked upon order confirmation.</p>
+        <button class="hero-cta" onclick="quickOrderWalnutLoaf()">Order Fresh Bake</button>
+      </div>
+    </section>
+
+    <!-- 4. CATEGORY SELECTOR -->
+    <div class="section-header">
+      <h3 class="section-title">Categories</h3>
+    </div>
+    <div class="category-scroll" id="categoryScroll">
+      <div class="category-chip active" data-cat="ALL">
+        <div class="category-icon-box">⭐</div>
+        <span class="category-label">All</span>
+      </div>
+      <div class="category-chip" data-cat="CAKES">
+        <div class="category-icon-box">🎂</div>
+        <span class="category-label">Cakes</span>
+      </div>
+      <div class="category-chip" data-cat="BREAD">
+        <div class="category-icon-box">🍞</div>
+        <span class="category-label">Bread</span>
+      </div>
+      <div class="category-chip" data-cat="PASTRIES">
+        <div class="category-icon-box">🥐</div>
+        <span class="category-label">Pastries</span>
+      </div>
+      <div class="category-chip" data-cat="BISCUITS">
+        <div class="category-icon-box">🍪</div>
+        <span class="category-label">Biscuits</span>
+      </div>
+      <div class="category-chip" data-cat="CUSTOM">
+        <div class="category-icon-box">✨</div>
+        <span class="category-label">Custom</span>
+      </div>
+    </div>
+
+    <!-- 5. VERTICAL LAZY LIST: LOCAL CHITRAL BAKERIES -->
+    <div class="section-header">
+      <h3 class="section-title">Local Chitral Bakeries</h3>
+      <span style="font-size: 12px; font-weight: 700; color: var(--color-action-primary);" id="bakeryCountBadge">5 Active</span>
+    </div>
+    <div class="section-subtitle">Authentic wood-fired stone hearth bakehouses across Chitral Valley</div>
+
+    <div class="bakery-list" id="bakeryListContainer">
+      <!-- Injected by JavaScript from dataset -->
+    </div>
+
+    <!-- 6. FRESH CREATIONS GRID -->
+    <div class="section-header" style="margin-top: 14px;">
+      <h3 class="section-title">Freshly Baked Today</h3>
+      <span style="font-size: 12px; color: var(--color-brand-secondary);">Real-time Stock</span>
+    </div>
+    <div class="products-grid" id="productsGridContainer">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <!-- 7. FLOATING BOTTOM CART BAR -->
+    <div class="sticky-cart-bar" id="stickyCartBar" onclick="openCheckoutModal()">
+      <div>
+        <div class="cart-summary-text" id="cartItemSummary">0 Items in Basket</div>
+        <div class="cart-summary-price" id="cartPriceSummary">Rs. 0</div>
+      </div>
+      <button class="btn-view-cart">View Basket →</button>
+    </div>
+
+    <!-- 8. BOTTOM APP NAVIGATION -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" onclick="switchTab('home')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" onclick="focusSearch()">
+        <span class="nav-icon">🔍</span>
+        <span>Search</span>
+      </button>
+      <button class="nav-btn" onclick="openOrdersModal()">
+        <span class="nav-icon">📋</span>
+        <span>Orders</span>
+      </button>
+      <button class="nav-btn" onclick="openInstallHelpModal()">
+        <span class="nav-icon">📲</span>
+        <span>Install</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- CHECKOUT & DUAL FULFILLMENT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Review & Place Order</h3>
+        <button class="btn-close-modal" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <!-- DUAL FULFILLMENT SELECTOR -->
+      <label style="font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block;">1. Fulfillment Mode</label>
+      <div class="fulfillment-grid">
+        <div class="fulfillment-card selected" id="modePrepareNow" onclick="selectFulfillment('PREPARE_NOW')">
+          <div class="fulfillment-title">⚡ Prepare Now</div>
+          <div class="fulfillment-desc">Instant stone bake. Live countdown starts when bakery accepts. (Est. 30-45m)</div>
+        </div>
+        <div class="fulfillment-card" id="modeScheduleLater" onclick="selectFulfillment('SCHEDULE_LATER')">
+          <div class="fulfillment-title">🗓️ Schedule Later</div>
+          <div class="fulfillment-desc">Choose a future date & 2-hr delivery slot. Ideal for cakes & parties.</div>
+        </div>
+      </div>
+
+      <div id="scheduleOptionsContainer" style="display: none; background: var(--color-bg-primary); border: 1px solid var(--color-accent); padding: 12px; border-radius: 10px; margin-bottom: 14px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--color-brand-primary);">Select Delivery Slot (Tomorrow):</label>
+        <select id="scheduleSlotSelect" style="width: 100%; height: 38px; margin-top: 6px; border-radius: 8px; border: 1px solid var(--color-border); padding: 0 10px; font-size: 13px;">
+          <option>10:00 AM - 12:00 PM</option>
+          <option>01:00 PM - 03:00 PM</option>
+          <option>04:00 PM - 06:00 PM</option>
+        </select>
+      </div>
+
+      <!-- BASKET ITEMS -->
+      <label style="font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block;">2. Basket Summary</label>
+      <div id="checkoutItemsList" style="margin-bottom: 12px; font-size: 13px;"></div>
+
+      <!-- DELIVERY LOCATION -->
+      <label style="font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block;">3. Delivery Address</label>
+      <div style="background: var(--color-bg-secondary); padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 14px;" id="checkoutLocationDisplay">
+        📍 Shahi Bazar, Chitral Town
+      </div>
+
+      <!-- PAYMENT METHOD -->
+      <label style="font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block;">4. Payment Method</label>
+      <div style="margin-bottom: 16px;">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 6px;">
+          <input type="radio" name="paymentMethod" value="Cash on Delivery" checked> Cash on Delivery (PKR)
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+          <input type="radio" name="paymentMethod" value="Easypaisa / JazzCash"> Local Digital Wallet (Easypaisa/JazzCash)
+        </label>
+      </div>
+
+      <!-- TOTAL & PLACE ORDER -->
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 800; margin-bottom: 16px; padding-top: 10px; border-top: 1px solid var(--color-border);">
+        <span>Total Amount:</span>
+        <span id="checkoutTotalPkr" style="color: var(--color-action-primary);">Rs. 0</span>
+      </div>
+
+      <button id="btnConfirmOrder" class="btn-install" style="width: 100%; height: 48px; font-size: 15px; justify-content: center;" onclick="submitOrder()">
+        Confirm & Request Oven Prep
+      </button>
+    </div>
+  </div>
+
+  <!-- CHROME INSTALL HELP MODAL -->
+  <div class="modal-overlay" id="installHelpModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Install on Android Device</h3>
+        <button class="btn-close-modal" onclick="closeInstallHelpModal()">✕</button>
+      </div>
+      <div style="text-align: center; margin-bottom: 16px;">
+        <img src="./icons/icon-192.png" alt="BakeHub" style="width: 64px; height: 64px; border-radius: 14px; margin-bottom: 8px;">
+        <h4 style="color: var(--color-brand-primary);">Chitral BakeHub App</h4>
+        <p style="font-size: 12px; color: var(--color-text-secondary);">Standalone PWA • Fresh bakery orders in Chitral Valley</p>
+      </div>
+
+      <div style="background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; margin-bottom: 18px; font-size: 13px; line-height: 1.5;">
+        <p style="font-weight: 700; margin-bottom: 8px; color: var(--color-brand-primary);">How to install via Google Chrome:</p>
+        <ol style="padding-left: 20px;">
+          <li style="margin-bottom: 6px;">Tap the Chrome menu button (<strong>⋮</strong> three dots in top-right).</li>
+          <li style="margin-bottom: 6px;">Select <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong>.</li>
+          <li>Tap <strong>"Install"</strong> to add Chitral BakeHub to your Android home screen and app drawer!</li>
+        </ol>
+      </div>
+
+      <button class="btn-install" style="width: 100%; height: 44px; font-size: 14px; justify-content: center;" onclick="tryBrowserInstallPrompt()">
+        Try Direct Install Prompt
+      </button>
+    </div>
+  </div>
+
+  <!-- ORDER TRACKING TIMELINE MODAL -->
+  <div class="modal-overlay" id="trackingModal">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title" id="trackingOrderNum">Order #4102</h3>
+        <button class="btn-close-modal" onclick="closeTrackingModal()">✕</button>
+      </div>
+      <div style="background: var(--color-bg-secondary); padding: 12px; border-radius: 10px; margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--color-action-primary);" id="trackingOvenStatus">🔥 IN THE OVEN (20 mins remaining)</div>
+        <div style="font-size: 13px; font-weight: 800; color: var(--color-brand-primary);" id="trackingBakeryName">Hindukush Artisanal Bakers</div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">Live Preparation & Dispatch Steps</div>
+      <div style="padding-left: 10px; border-left: 2px solid var(--color-action-primary); margin-bottom: 16px;">
+        <div style="margin-bottom: 8px; font-size: 12px;">✅ <strong>Order Placed</strong> — Confirmed by customer</div>
+        <div style="margin-bottom: 8px; font-size: 12px;">✅ <strong>Bakery Confirmed</strong> — Stone oven ticket opened</div>
+        <div style="margin-bottom: 8px; font-size: 12px; color: var(--color-action-primary);">🔥 <strong>Baking in Oven</strong> (Active)</div>
+        <div style="margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary);">⏳ <strong>Ready at Counter</strong> for Rider</div>
+        <div style="font-size: 12px; color: var(--color-text-secondary);">🛵 <strong>Out for Delivery</strong> in Chitral Town</div>
+      </div>
+
+      <div style="background: var(--color-bg-primary); border: 1px solid var(--color-border); padding: 12px; border-radius: 10px; text-align: center;">
+        <div style="font-size: 11px; color: var(--color-text-secondary);">Handover Verification PIN:</div>
+        <div style="font-size: 24px; font-weight: 900; letter-spacing: 4px; color: var(--color-brand-primary);" id="trackingPinDisplay">8842</div>
+        <div style="font-size: 10px; color: var(--color-brand-secondary); margin-top: 4px;">Share this code with your rider upon delivery.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="appToast">Chitral BakeHub Installed!</div>
+
+  <!-- DATA & APP LOGIC -->
+  <script>
+    // --- 1. DATASET ---
+    const BAKERIES = [
+      {
+        id: "bakery_1",
+        name: "Hindukush Artisanal Bakers",
+        location: "Shahi Bazar",
+        rating: 4.9,
+        reviews: 142,
+        prep: "20-35 mins",
+        fee: 80,
+        status: "Oven Active",
+        statusClass: "status-active",
+        img: "./images/img_bakery_hindukush.jpg",
+        desc: "Centuries-old stone oven traditions in the heart of Shahi Bazar. Famous for hand-kneaded wild walnut sourdough loaves, hot morning Roghani naans, and mountain honey pastries.",
+        tags: ["Walnut Loaves", "Stone Oven", "Wild Honey"]
+      },
+      {
+        id: "bakery_2",
+        name: "Tirich Mir Hearth & Sweets",
+        location: "Chew Bazar",
+        rating: 4.8,
+        reviews: 98,
+        prep: "30-45 mins",
+        fee: 100,
+        status: "Oven Active",
+        statusClass: "status-active",
+        img: "./images/img_cake_pastry.jpg",
+        desc: "Artisan confectionery and bespoke celebration oven bakes. Specializes in multi-tier celebration cakes, rich Belgian dark chocolate fudge, and crispy Chitrali almond tea biscuits.",
+        tags: ["Fudge Cakes", "Celebration Bakes", "Biscuits"]
+      },
+      {
+        id: "bakery_3",
+        name: "Pamir Sweets & Pastry Works",
+        location: "Denin Chowk",
+        rating: 4.7,
+        reviews: 64,
+        prep: "35-50 mins",
+        fee: 120,
+        status: "Busy (+20m)",
+        statusClass: "status-busy",
+        img: "./images/img_bakery_hindukush.jpg",
+        desc: "Denin's beloved local bakehouse, renowned for slow-cooked cardamom Shahi Halwa puff pastries, sesame crust rolls, and freshly pulled breakfast milk loaves.",
+        tags: ["Shahi Halwa Pastries", "Roghani Naan"]
+      },
+      {
+        id: "bakery_4",
+        name: "Drosh Valley Mountain Bakes",
+        location: "Drosh Main",
+        rating: 4.9,
+        reviews: 82,
+        prep: "40-55 mins",
+        fee: 150,
+        status: "Oven Active",
+        statusClass: "status-active",
+        img: "./images/img_cake_pastry.jpg",
+        desc: "Rustic Lower Chitral bakehouse utilizing stone-milled organic whole wheat, sun-dried mountain mulberries, and roasted walnut tea cakes baked fresh every morning.",
+        tags: ["Organic Wheat", "Dry Fruit Cakes"]
+      },
+      {
+        id: "bakery_5",
+        name: "Kalash Valley Hearth & Bakes",
+        location: "Bumburet Link",
+        rating: 4.8,
+        reviews: 57,
+        prep: "35-50 mins",
+        fee: 140,
+        status: "Oven Active",
+        statusClass: "status-active",
+        img: "./images/img_bakery_hindukush.jpg",
+        desc: "Preserving authentic valley recipes with wood-smoked Kalash walnut flatbreads, pure butter shortbreads, and seasonal alpine apricot tarts.",
+        tags: ["Wood Smoked", "Butter Shortbread"]
+      }
+    ];
+
+    const PRODUCTS = [
+      {
+        id: "p1",
+        name: "Chitrali Walnut Loaf",
+        category: "BREAD",
+        price: 380,
+        portion: "550g loaf",
+        img: "./images/img_hero_banner.jpg",
+        desc: "Stone-hearth artisan sourdough crafted with crushed wild Chitral walnuts and freshly milled flour.",
+        rapid: true
+      },
+      {
+        id: "p2",
+        name: "Honey Almond Pastry Slice",
+        category: "PASTRIES",
+        price: 220,
+        portion: "1 slice",
+        img: "./images/img_cake_pastry.jpg",
+        desc: "Light butter sponge infused with raw valley blossom honey and topped with toasted almond flakes.",
+        rapid: true
+      },
+      {
+        id: "p3",
+        name: "Chocolate Walnut Fudge Cake",
+        category: "CAKES",
+        price: 1450,
+        portion: "2 lbs (Serves 6-8)",
+        img: "./images/img_cake_pastry.jpg",
+        desc: "Decadent Dutch cocoa cake with dark chocolate ganache and roasted mountain walnuts.",
+        rapid: true
+      },
+      {
+        id: "p4",
+        name: "Royal Shahi Halwa Puff Pastry",
+        category: "PASTRIES",
+        price: 190,
+        portion: "2 pieces",
+        img: "./images/img_bakery_hindukush.jpg",
+        desc: "Flaky French puff pastry folded around slow-cooked cardamom halwa and crushed pistachios.",
+        rapid: true
+      },
+      {
+        id: "p5",
+        name: "Traditional Roghani Naan",
+        category: "BREAD",
+        price: 240,
+        portion: "Pack of 3",
+        img: "./images/img_hero_banner.jpg",
+        desc: "Crispy clay oven flatbreads enriched with milk, butter, and golden sesame seeds.",
+        rapid: true
+      },
+      {
+        id: "p6",
+        name: "Chitral Almond Butter Biscuits",
+        category: "BISCUITS",
+        price: 320,
+        portion: "Box of 12",
+        img: "./images/img_cake_pastry.jpg",
+        desc: "Crisp, crumbly tea biscuits made with pure desi ghee and ground Chitral almonds.",
+        rapid: true
+      }
+    ];
+
+    let cart = {}; // { prodId: quantity }
+    let selectedOrderType = "PREPARE_NOW";
+    let activeCategory = "ALL";
+    let deferredPrompt = null;
+
+    // --- 2. RENDER FUNCTIONS ---
+    function renderBakeries() {
+      const container = document.getElementById('bakeryListContainer');
+      container.innerHTML = BAKERIES.map(b => `
+        <article class="bakery-card" onclick="viewBakeryProducts('${b.id}')">
+          <div class="bakery-img-box">
+            <img src="${b.img}" alt="${b.name}" loading="lazy">
+            <div class="bakery-oven-badge ${b.statusClass}">● ${b.status}</div>
+            <div class="bakery-rating-pill">★ ${b.rating} (${b.reviews})</div>
+            <div class="bakery-location-pill">📍 ${b.location}</div>
+          </div>
+          <div class="bakery-details">
+            <h4 class="bakery-name">${b.name}</h4>
+            <p class="bakery-desc">${b.desc}</p>
+            <div class="bakery-meta-row">
+              <span>⏱️ ${b.prep}</span>
+              <span>•</span>
+              <span style="font-weight: 700; color: var(--color-brand-primary);">Rs. ${b.fee} Delivery</span>
+            </div>
+            <div class="bakery-actions-row">
+              <div class="specialty-tags">
+                ${b.tags.map(t => `<span class="specialty-tag">${t}</span>`).join('')}
+              </div>
+              <button class="btn-view-bakes" onclick="event.stopPropagation(); viewBakeryProducts('${b.id}')">View Bakes →</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      document.getElementById('bakeryCountBadge').textContent = `${BAKERIES.length} Active`;
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('productsGridContainer');
+      const filtered = activeCategory === 'ALL' 
+        ? PRODUCTS 
+        : PRODUCTS.filter(p => p.category === activeCategory);
+
+      container.innerHTML = filtered.map(p => {
+        const qty = cart[p.id] || 0;
+        return `
+          <div class="product-card">
+            <div class="product-thumb-box">
+              <img src="${p.img}" alt="${p.name}" loading="lazy">
+              ${p.rapid ? `<span class="product-rapid-badge">⚡ Prepare Now</span>` : ''}
+            </div>
+            <div class="product-body">
+              <div class="product-title">${p.name}</div>
+              <div class="product-desc">${p.desc}</div>
+              <div style="font-size: 10px; color: var(--color-brand-secondary); margin-bottom: 6px;">${p.portion}</div>
+              <div class="product-footer">
+                <span class="product-price">Rs. ${p.price}</span>
+                ${qty === 0 
+                  ? `<button class="btn-add" onclick="addToCart('${p.id}')">ADD</button>` 
+                  : `<div class="qty-stepper">
+                      <button class="qty-btn" onclick="decrementCart('${p.id}')">-</button>
+                      <span class="qty-val">${qty}</span>
+                      <button class="qty-btn" onclick="addToCart('${p.id}')">+</button>
+                    </div>`
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- 3. CART & CHECKOUT ---
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateCartUI();
+      renderProducts();
+    }
+
+    function decrementCart(id) {
+      if (cart[id] > 1) {
+        cart[id]--;
+      } else {
+        delete cart[id];
+      }
+      updateCartUI();
+      renderProducts();
+    }
+
+    function updateCartUI() {
+      const items = Object.keys(cart);
+      const totalCount = items.reduce((sum, id) => sum + cart[id], 0);
+      let totalPrice = 0;
+      items.forEach(id => {
+        const prod = PRODUCTS.find(p => p.id === id);
+        if (prod) totalPrice += prod.price * cart[id];
+      });
+
+      const bar = document.getElementById('stickyCartBar');
+      if (totalCount > 0) {
+        bar.style.display = 'flex';
+        document.getElementById('cartItemSummary').textContent = `${totalCount} Item${totalCount > 1 ? 's' : ''} in Basket`;
+        document.getElementById('cartPriceSummary').textContent = `Rs. ${totalPrice}`;
+      } else {
+        bar.style.display = 'none';
+      }
+    }
+
+    function quickOrderWalnutLoaf() {
+      addToCart('p1');
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal() {
+      const listContainer = document.getElementById('checkoutItemsList');
+      let html = '';
+      let subtotal = 0;
+      Object.keys(cart).forEach(id => {
+        const prod = PRODUCTS.find(p => p.id === id);
+        if (prod) {
+          const itemTotal = prod.price * cart[id];
+          subtotal += itemTotal;
+          html += `<div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span>${cart[id]}x ${prod.name}</span>
+            <strong>Rs. ${itemTotal}</strong>
+          </div>`;
+        }
+      });
+      listContainer.innerHTML = html;
+      const total = subtotal + 80; // Rs. 80 delivery fee
+      document.getElementById('checkoutTotalPkr').textContent = `Rs. ${total} (Inc. Rs. 80 Delivery)`;
+      document.getElementById('checkoutModal').style.display = 'flex';
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').style.display = 'none';
+    }
+
+    function selectFulfillment(mode) {
+      selectedOrderType = mode;
+      document.getElementById('modePrepareNow').classList.toggle('selected', mode === 'PREPARE_NOW');
+      document.getElementById('modeScheduleLater').classList.toggle('selected', mode === 'SCHEDULE_LATER');
+      document.getElementById('scheduleOptionsContainer').style.display = mode === 'SCHEDULE_LATER' ? 'block' : 'none';
+      document.getElementById('btnConfirmOrder').textContent = mode === 'PREPARE_NOW' ? 'Confirm & Request Oven Prep' : 'Schedule Bakery Order';
+    }
+
+    function submitOrder() {
+      closeCheckoutModal();
+      cart = {};
+      updateCartUI();
+      renderProducts();
+      showToast('Order confirmed! Opening live oven tracking.');
+      openTrackingModal('#4103');
+    }
+
+    function openTrackingModal(num) {
+      document.getElementById('trackingOrderNum').textContent = num || 'Order #4102';
+      document.getElementById('trackingModal').style.display = 'flex';
+    }
+
+    function closeTrackingModal() {
+      document.getElementById('trackingModal').style.display = 'none';
+    }
+
+    function openOrdersModal() {
+      openTrackingModal('#4102');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('appToast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+
+    function viewBakeryProducts(id) {
+      const b = BAKERIES.find(item => item.id === id);
+      if (b) showToast(`Viewing freshly baked specialties from ${b.name}`);
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+
+    function focusSearch() {
+      document.getElementById('searchInput').focus();
+    }
+
+    function switchTab(tab) {
+      if (tab === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 4. CATEGORY FILTERING & SEARCH ---
+    document.querySelectorAll('.category-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeCategory = chip.getAttribute('data-cat');
+        renderProducts();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      const container = document.getElementById('productsGridContainer');
+      container.innerHTML = filtered.map(p => {
+        const qty = cart[p.id] || 0;
+        return `
+          <div class="product-card">
+            <div class="product-thumb-box"><img src="${p.img}" alt="${p.name}"></div>
+            <div class="product-body">
+              <div class="product-title">${p.name}</div>
+              <div class="product-desc">${p.desc}</div>
+              <div class="product-footer">
+                <span class="product-price">Rs. ${p.price}</span>
+                <button class="btn-add" onclick="addToCart('${p.id}')">ADD</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    });
+
+    // --- 5. PROGRESSIVE WEB APP (PWA) REGISTRATION & ANDROID INSTALL LOGIC ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => {
+            console.log('[Chitral BakeHub PWA] Service Worker registered. Scope:', reg.scope);
+          })
+          .catch(err => {
+            console.warn('[Chitral BakeHub PWA] Service Worker registration failed:', err);
+          });
+      });
+    }
+
+    // Capture Android beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      console.log('[Chitral BakeHub PWA] beforeinstallprompt captured for Android installation');
+
+      // Show attractive installation banner
+      const banner = document.getElementById('pwaInstallBanner');
+      if (banner && !sessionStorage.getItem('bakehub_install_dismissed')) {
+        banner.style.display = 'flex';
+      }
+
+      // Highlight the header install button
+      const headerBtn = document.getElementById('headerInstallBtn');
+      if (headerBtn) {
+        headerBtn.style.display = 'flex';
+      }
+    });
+
+    // Trigger installation
+    function tryBrowserInstallPrompt() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('[Chitral BakeHub PWA] User accepted installation prompt');
+            showToast('Installing Chitral BakeHub on Android...');
+          } else {
+            console.log('[Chitral BakeHub PWA] User dismissed install prompt');
+          }
+          deferredPrompt = null;
+          closeInstallHelpModal();
+        });
+      } else {
+        openInstallHelpModal();
+      }
+    }
+
+    document.getElementById('btnTriggerInstall').addEventListener('click', tryBrowserInstallPrompt);
+    document.getElementById('headerInstallBtn').addEventListener('click', () => {
+      if (deferredPrompt) {
+        tryBrowserInstallPrompt();
+      } else {
+        openInstallHelpModal();
+      }
+    });
+
+    document.getElementById('btnDismissInstall').addEventListener('click', () => {
+      document.getElementById('pwaInstallBanner').style.display = 'none';
+      sessionStorage.setItem('bakehub_install_dismissed', 'true');
+    });
+
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('[Chitral BakeHub PWA] App installed successfully on Android home screen!');
+      document.getElementById('pwaInstallBanner').style.display = 'none';
+      showToast('🎉 Chitral BakeHub installed on your Android device!');
+    });
+
+    function openInstallHelpModal() {
+      document.getElementById('installHelpModal').style.display = 'flex';
+    }
+
+    function closeInstallHelpModal() {
+      document.getElementById('installHelpModal').style.display = 'none';
+    }
+
+    // Initialize
+    renderBakeries();
+    renderProducts();
+  </script>
+</body>
+</html>

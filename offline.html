@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Offline — Chitral BakeHub</title>
+  <meta name="theme-color" content="#39251C">
+  <link rel="icon" href="./favicon.ico">
+  <link rel="manifest" href="./manifest.json">
+  <style>
+    :root {
+      --color-bg-primary: #FFF8ED;
+      --color-bg-secondary: #F3E6D5;
+      --color-brand-primary: #39251C;
+      --color-action-primary: #D97732;
+      --color-accent: #F2C66D;
+      --color-card: #FFFFFF;
+      --color-text-primary: #30231D;
+      --color-text-secondary: #76665A;
+      --color-border: #E8DCCB;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .offline-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 36px 24px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 10px 25px -5px rgba(57, 37, 28, 0.08);
+    }
+
+    .icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: var(--color-bg-secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+      font-size: 36px;
+    }
+
+    h1 {
+      font-size: 22px;
+      color: var(--color-brand-primary);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .retry-btn {
+      display: inline-block;
+      width: 100%;
+      background: var(--color-action-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .retry-btn:hover {
+      opacity: 0.92;
+    }
+
+    .tagline {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="offline-card">
+    <div class="icon-wrap">🏔️</div>
+    <h1>You're Currently Offline</h1>
+    <p>We couldn't connect to the Chitral BakeHub network. Check your mobile data or Wi-Fi connection to track live stone oven preparations and place bakery orders.</p>
+    <button class="retry-btn" onclick="window.location.reload()">Retry Connection</button>
+    <div class="tagline">Chitral BakeHub • Freshly prepared. Locally delivered.</div>
+  </div>
+
+</body>
+</html>
